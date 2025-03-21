@@ -1,0 +1,78 @@
+Mcdonald's Entregas + Glovo/UberEat's
+
+    // Estruturar os componentes necessários
+DEFINIR Componentes do Sistema:
+    Base de Dados de Clientes
+    Base de Dados de Produtos
+    Base de Dados de Estafetas (mota ou carro)
+    Sistema de Localização e GPS
+    Integração com Glovo e Uber Eats
+    Módulo de Gestão de Pedidos
+    Interface para Clientes (app McDonald's)
+    Interface para Estafetas (app interna ou integrada)
+    Painel Administrativo (para gerentes de turno/gerente de loja do McDonald's)  
+
+    // Funcionalidades principais do sistema 
+DEFINIR Funcionalidades:
+    Registo de Clientes:
+        - Nome, Email, Telefone, Endereço, Métodos de Pagamento (incluindo preferêncial|para evitar a repetição de informação a cada encomenda).
+    Registo de Produtos:
+        - Nome, Preço, Categorias, Promoções, Disponibilidade por Restaurante.
+    Registo de Estafetas:
+        - Nome, Tipo de Veículo (mota ou carro), TotalProd(se é possivel levar o pedido total do cliente, ex:3produtos para mota / 10 para carro), Status (ativo ou inativo), Localização Atual.
+    Gestão de Pedidos:
+        - Registo do Pedido:
+            - Seleção de produtos pelo cliente.
+            - Cálculo do preço final (incluindo taxas de entrega + IVA).
+            - Escolha do método de entrega (McDonald's ou Glovo/Uber Eats).
+        - Atribuição de Pedido:
+            - Verificar disponibilidade de estafetas McDonald's próximos.
+            - Total Numérico de produto (se é possivel levar os produtos totais do cliente c X veiculo).
+            - Se não houver estafetas disponíveis, encaminhar para Glovo/Uber Eats.
+            - Gerar código de rasteio (GPS) único para o cliente.
+    Localização em tempo real de Entrega:
+        - Visualizar localização em tempo real do estafeta (ou status da entrega via Glovo/Uber Eats).
+    Notificações:
+        - Enviar atualizações de status para o cliente (ex: "Pedido em preparação", "Pedido a caminho", etc.).
+    Integração com Glovo e Uber Eats:
+        - API de Comunicação(ex: Deliverect): https://www.vendus.pt/ajuda/integracao-com-deliverect/
+            - Enviar informações do pedido para os parceiros(Registo de Pedido, Atribuição do Pedido, etc).
+            - Receber status da entrega e atualizações(Pedidos cancelados/entregues/acidente/erro na morada|pagamento).
+
+    // Estrutura da Base de Dados
+DEFINIR EstruturaDaBaseDeDados:
+    Tabela Clientes:
+        - IDCliente, Nome, Email, Telefone, Endereço, HistóricoPedidos.
+    Tabela Produtos:
+        - IDProduto, NomeProduto, Preço, Categoria, stock, RestauranteAssociado.
+    Tabela Restaurantes:
+        - IDRestaurante, Nome, Localização, HorárioFuncionamento.
+    Tabela Pedidos:
+        - IDPedido, IDCliente, IDRestaurante, Produtos (lista), StatusPedido, CódigoGPS, TipoEntrega (Próprio/Parceiros), EstafetaAssociado.
+    Tabela Estafetas:
+        - IDEstafeta, Nome, TipoVeículo, TotalNumerico, Status, LocalizaçãoAtual.
+    Tabela Parceiros (Glovo/Uber Eats):
+        - IDParceiro, NomeParceiro, APIKey, StatusIntegracao.
+
+    // Fluxo Geral do Sistema
+DEFINIR FluxoGeral:
+    CLIENTE acessa a app McDonald's.
+    CLIENTE seleciona restaurante, produtos e método de entrega.
+    SISTEMA verifica disponibilidade de estafetas McDonald's:
+        SE Estafeta disponível:
+            - While verificação do TotalProd.
+                    - Se veiculo tiver o número de quantidade produto correto, avançar
+                    - Se não, procurar estafeta then seleciona
+            - Atribuir pedido ao estafeta.
+            - Enviar notificações ao cliente com atualizações de status e rastear.
+        CASO CONTRÁRIO:
+            - Encaminhar pedido para Glovo/Uber Eats via API.
+            - Receber status e atualizações do parceiro.
+    CLIENTE recebe o pedido e confirma entrega.
+
+    // Painel Administrativo
+DEFINIR PainelAdministrativo:
+    Monitorizar os status de pedidos (em preparação, a caminho, entregue).
+    Gerenciar registo de produtos, clientes e estafetas.
+    Verificar relatórios de desempenho (tempo médio de entrega, satisfação do cliente, etc.).
+    Configurar integrações com Glovo e Uber Eats (chaves de API, logs de erros).
