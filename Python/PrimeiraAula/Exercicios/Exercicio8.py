@@ -1,0 +1,11 @@
+print("Digite o lado 1 do trapezio: ")
+lado1 = float(input())
+print("Digite o lado 2 do trapezio: ")
+lado2 = float(input())
+print("Digite a lado 3 do trapezio: ")
+lado3 = float(input())
+print("Digite a lado 4 do trapezio: ")
+lado4 = float(input())
+Ptrapezio = (lado1 + lado2 + lado3 + lado4)
+
+print (Ptrapezio)
