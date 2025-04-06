@@ -1,1 +1,1 @@
-School projects
+Projetos e trabalhos realizados em aula.
